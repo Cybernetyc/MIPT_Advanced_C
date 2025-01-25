@@ -5,7 +5,7 @@ int main(void)
 {
 
 
-  int N = 0;
+  int N = 0; ///< Переменная согласно условия
   scanf("%d", &N);
 
   int max = 0;
