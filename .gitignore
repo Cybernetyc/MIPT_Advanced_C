@@ -1,4 +1,4 @@
 .idea*
 cmake-build-*
 
-/Lesson_1/A*/.idea/
+/Lesson_1/A*/.idea/*
