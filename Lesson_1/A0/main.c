@@ -3,9 +3,7 @@
 
 int main(void)
 {
-
-
-  int N = 0;  ///< Переменная согласно условия
+  int N = 0;                ///< Переменная согласно условия
   scanf("%d", &N);
 
   int max = 0;
@@ -14,7 +12,6 @@ int main(void)
   for (int i = 0; i < N; ++i) {
 
     scanf("%d", &var);
-
     if (var > max) {
       max = var;
       counter_for_max = 1;
