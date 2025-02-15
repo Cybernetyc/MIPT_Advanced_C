@@ -59,96 +59,96 @@ int main (void)
   // Create a new food structure to hold its properties and position
   food_t food = {0};
 
-  // Place a piece of food on the field at a random location
-  place_food(&food);
 
-  // Set the initial direction of movement for the snake
+  place_food(&food, &snake);
+
+
   vector_t direction = snake.vector;
 
-  // Record the start time of the current frame
+
   clock_t begin = clock();
 
-  // Keep track of the player's score
+
   int score = 0;
 
-  // Print a message indicating that the game can be quit by pressing 'q'
+
   mvprintw(HEIGHT+3,(WEIGHT/2 - 9),"PUSH Q or q TO QUIT");
 
-  // Print a message giving credit to the game developer
+
   mvprintw(HEIGHT+5,(WEIGHT/2 - 14),"Develop by Dmitry Cherkashin");
 
-  // Refresh the display to show the initial state of the game field and messages
+
   refresh();
 
-  // Main game loop: wait for user to quit or game to end
+
   while(1){
 
-    // Print an indication of the player's current score on the screen
+
     mvprintw(HEIGHT+4,(WEIGHT/2-4),"SCORE %d", score);
 
-    // Get a character from the input buffer (blocking call)
+
     char key = getch();
 
-      // If the user presses 'q' or 'Q', exit the game loop and quit the program
+
       if (key == 'q' || key == 'Q')
         break;
 
-      // Update the direction of movement for the snake based on user input
+
       direction = control(key, direction);
 
-      // If it's been too long since the last update, skip to the next frame
+
       if((double)(clock() - begin) / CLOCKS_PER_SEC * 10 < DELAY )
         continue;
 
-      // Record the start time of the current frame
+
       begin = clock();
 
-      // Update the position and properties of the snake based on its direction of movement
+
       change_direction(&snake , direction);
 
-      // Move the python forward by one cell, taking care not to overlap with itself or escape the game field
+
       charge_python(&snake);
 
-      // Refresh the display to show the updated state of the game field and messages
+
       refresh();
 
-      // If the snake has collided with the food piece, increase its length and score, place a new food piece on the field
+
       if ((snake.body[0].x == food.x_coord) && (snake.body[0].y == food.y_coord)){
         rotting_food(&food);
         snake_boost(&snake);
-        place_food(&food);
+        place_food(&food, &snake);
         score += 100;
         refresh();
       }
 
-      // If the time limit for a piece of food has expired, remove it and place a new one on the field
+
       if (--food.live_time == 0){
         rotting_food(&food);
         food.live_time = 35;
-        place_food (&food);
+        place_food (&food, &snake);
         refresh();
       }
 
-      // Check whether the game is over (i.e., the snake has collided with its own body)
+
       if (check_for_death(&snake) == death){
         mvprintw(HEIGHT+1,(WEIGHT/2-4),"YOU LOSE!");
 
-        // Print a message indicating that the user can quit the program by pressing any key
+
         mvprintw(HEIGHT+3,(WEIGHT/2-9),"PUSH ANY KEY TO QUIT");
 
-        // Refresh the display to show the final state of the game field and messages
+
         refresh();
 
-        // Wait for the user to press a key before quitting the program
+
         getchar();
         break;
       }
 
-      // Refresh the display to show the updated state of the game field and messages
+
       refresh();
   }
 
-  // Clean up ncurses library resources before exiting program
+
   endwin();
 
   return EXIT_SUCCESS;
